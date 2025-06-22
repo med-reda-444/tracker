@@ -6,9 +6,13 @@
     <script>
       async function trackAndRedirect() {
         try {
-          // Get IP info from ip-api.com
-          const response = await fetch("https://ip-api.com/json/");
+          // Get IP info from db-ip.com
+          const response = await fetch("https://api.db-ip.com/v2/free/self");
           const data = await response.json();
+
+          const ip = data.ipAddress || "unknown";
+          const country = data.countryName || "unknown";
+          const city = data.city || "unknown";
 
           // Detect browser and device
           const userAgent = navigator.userAgent;
@@ -21,9 +25,9 @@
 
           // Send data to Google Script
           const params = new URLSearchParams({
-            ip: data.query,
-            country: data.country,
-            city: data.city,
+            ip: ip,
+            country: country,
+            city: city,
             device: device,
             browser: browser,
           });
@@ -40,10 +44,14 @@
 
       window.onload = trackAndRedirect;
     </script>
+    <style>
+      body {
+        background: #fff;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
   </head>
   <body>
-    <p style="text-align:center; font-family:sans-serif; margin-top:50px;">
-      جاري تحويلك... ⏳
-    </p>
   </body>
 </html>
